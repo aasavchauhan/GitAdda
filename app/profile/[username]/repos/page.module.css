@@ -1,0 +1,205 @@
+.main {
+    min-height: 100vh;
+    padding: var(--space-8) 0;
+    position: relative;
+    background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 77, 77, 0.08), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(0, 212, 255, 0.05), transparent);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+}
+
+/* Header */
+.header {
+    margin-bottom: var(--space-8);
+}
+
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    margin-bottom: var(--space-4);
+    transition: color 0.2s ease;
+}
+
+.backLink:hover {
+    color: var(--text-primary);
+}
+
+.title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.count {
+    background: rgba(255, 107, 91, 0.15);
+    color: var(--accent-coral);
+    -webkit-text-fill-color: var(--accent-coral);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-6);
+    padding: var(--space-4) var(--space-5);
+    background: rgba(10, 15, 26, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(136, 146, 176, 0.12);
+    border-radius: var(--radius-lg);
+}
+
+.sortGroup {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.sortLabel {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    margin-right: var(--space-2);
+}
+
+.sortButton {
+    padding: var(--space-2) var(--space-4);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sortButton:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.sortButton.active {
+    background: rgba(255, 107, 91, 0.15);
+    border-color: rgba(255, 107, 91, 0.3);
+    color: var(--accent-coral);
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-5);
+}
+
+/* Load More */
+.loadMoreWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-10);
+}
+
+.loadMoreButton {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-10);
+    background: linear-gradient(135deg, rgba(255, 107, 91, 0.2), rgba(0, 212, 255, 0.15));
+    border: 1px solid rgba(255, 107, 91, 0.3);
+    border-radius: var(--radius-full);
+    color: var(--text-primary);
+    font-size: var(--text-base);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loadMoreButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 107, 91, 0.25);
+    background: linear-gradient(135deg, var(--accent-coral), var(--accent-cyan));
+    border-color: transparent;
+}
+
+.loadMoreButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.buttonSpinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* End Message */
+.endMessage {
+    text-align: center;
+    margin-top: var(--space-10);
+    padding: var(--space-6);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+}
+
+/* Loading State */
+.loadingState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: var(--space-4);
+    color: var(--text-secondary);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 107, 91, 0.2);
+    border-top-color: var(--accent-coral);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .sortGroup {
+        justify-content: center;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

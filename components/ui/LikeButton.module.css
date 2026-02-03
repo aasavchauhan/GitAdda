@@ -1,0 +1,103 @@
+/* Base button styles - minimal like QuickSaveButton */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    color: rgba(148, 163, 184, 0.8);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    user-select: none;
+    padding: 6px;
+    border-radius: 50%;
+    position: relative;
+}
+
+/* Size variants */
+.sizeSm .icon {
+    width: 16px;
+    height: 16px;
+}
+
+.sizeMd .icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* Hover state */
+.button:hover:not(:disabled) {
+    color: var(--accent-coral);
+    background: rgba(255, 77, 77, 0.15);
+    box-shadow: 0 0 12px rgba(255, 77, 77, 0.2);
+    transform: scale(1.1);
+}
+
+/* Active/Liked state */
+.button.active {
+    color: var(--accent-coral);
+}
+
+.button.active .icon {
+    fill: var(--accent-coral);
+    filter: drop-shadow(0 0 6px rgba(255, 77, 77, 0.6));
+}
+
+/* Click feedback */
+.button:active:not(:disabled) {
+    transform: scale(0.9);
+}
+
+/* Disabled state */
+.button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Icon wrapper for animation */
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Icon sizing */
+.icon {
+    width: 16px;
+    height: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    stroke-width: 2px;
+}
+
+/* Pop animation when toggling */
+.button.animating .iconWrapper {
+    animation: heartPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes heartPop {
+    0% {
+        transform: scale(0.8);
+    }
+
+    40% {
+        transform: scale(1.5);
+    }
+
+    70% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Count display */
+.count {
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    min-width: 1ch;
+    color: inherit;
+}

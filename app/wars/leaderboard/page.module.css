@@ -1,0 +1,191 @@
+.main {
+    min-height: 100vh;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, #ddd 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.leaderboard {
+    background: rgba(10, 15, 26, 0.6);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(136, 146, 176, 0.12);
+    border-radius: 24px;
+    padding: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.tableHeader {
+    display: grid;
+    grid-template-columns: 80px 3fr 1fr 1fr 80px;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.rank {
+    text-align: center;
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 80px 3fr 1fr 1fr 80px;
+    padding: 1.25rem 1.5rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    transition: background 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.rankNumber {
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.topRank {
+    color: #ffd700;
+    /* Gold */
+    font-size: 1.4rem;
+}
+
+.topRank2 {
+    color: #c0c0c0;
+    /* Silver */
+    font-size: 1.3rem;
+}
+
+.topRank3 {
+    color: #cd7f32;
+    /* Bronze */
+    font-size: 1.2rem;
+}
+
+.repoInfo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.repoDetails {
+    display: flex;
+    flex-direction: column;
+}
+
+.repoName {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.repoOwner {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.stat {
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    color: var(--accent-cyan);
+    font-weight: 500;
+}
+
+.matches {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.action {
+    display: flex;
+    justify-content: center;
+}
+
+.arrow {
+    color: var(--text-muted);
+    opacity: 0;
+    transform: translateX(-5px);
+    transition: all 0.2s ease;
+    width: 20px;
+    height: 20px;
+}
+
+.row:hover .arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--accent-cyan);
+}
+
+@media (max-width: 768px) {
+
+    .tableHeader,
+    .row {
+        grid-template-columns: 50px 1fr 80px;
+    }
+
+    .matchesHidden,
+    .actionHidden {
+        display: none;
+    }
+
+    .main {
+        padding: 6rem 1rem 2rem;
+    }
+}

@@ -1,0 +1,33 @@
+.button {
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid var(--accent-cyan);
+    background: transparent;
+    color: var(--accent-cyan);
+}
+
+.button:hover {
+    background: rgba(0, 229, 204, 0.1);
+}
+
+.button.following {
+    background: var(--bg-elevated);
+    border-color: var(--border-default);
+    color: var(--text-secondary);
+}
+
+.button.following:hover {
+    border-color: var(--accent-coral);
+    color: var(--accent-coral);
+    content: "Unfollow";
+    /* Note: content replacement usually needs span trickery or aria-label, simpler to keep text static for now or use JS */
+}
+
+.compact {
+    padding: 4px 12px;
+    font-size: var(--text-xs);
+}

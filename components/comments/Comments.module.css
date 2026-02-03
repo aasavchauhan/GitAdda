@@ -1,0 +1,186 @@
+.section {
+    margin-top: 3rem;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 2rem;
+}
+
+.header {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.count {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.form {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.textareaWrapper {
+    flex: 1;
+    position: relative;
+}
+
+.textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    background: var(--glass-surface-1);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    color: var(--text-primary);
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.2s ease;
+}
+
+.textarea:focus {
+    outline: none;
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 0 2px rgba(0, 229, 204, 0.1);
+    background: var(--glass-surface-2);
+}
+
+.submitBtn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    background: var(--neon-cyan);
+    color: #000;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-self: flex-end;
+}
+
+.submitBtn:hover {
+    background: #00ffd5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 229, 204, 0.3);
+}
+
+.submitBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Comment Item */
+.comment {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.avatar {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.contentWrapper {
+    flex: 1;
+    background: var(--glass-surface-1);
+    border: 1px solid var(--glass-border);
+    border-radius: 0 16px 16px 16px;
+    padding: 1.25rem;
+    transition: all 0.2s ease;
+}
+
+.contentWrapper:hover {
+    background: var(--glass-surface-2);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.commentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.username {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.body {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.deleteBtn {
+    padding: 0.25rem;
+    color: var(--text-muted);
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.deleteBtn:hover {
+    color: var(--accent-coral);
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.loginPrompt {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--glass-surface-1);
+    border-radius: 16px;
+    border: 1px dashed var(--glass-border);
+    color: var(--text-secondary);
+}
+
+.loginLink {
+    color: var(--neon-cyan);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.loginLink:hover {
+    color: #fff;
+    text-decoration: underline;
+}

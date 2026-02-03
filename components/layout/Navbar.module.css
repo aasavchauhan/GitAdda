@@ -1,0 +1,203 @@
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 15, 26, 0.85);
+    border-bottom: 1px solid rgba(136, 146, 176, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-6);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--space-6);
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-decoration: none;
+}
+
+.logo:hover {
+    text-decoration: none;
+}
+
+
+.logoIcon {
+    width: 24px;
+    height: 24px;
+    color: var(--accent-coral);
+    transition: transform 0.3s ease;
+}
+
+.logo:hover .logoIcon {
+    transform: rotate(15deg);
+}
+
+.logoText {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    font-family: var(--font-display);
+    /* Clean, modern text instead of heavy gradients if we want less "vibe coded", but user said premium. 
+       Let's keep the gradient but make it more subtle or just keep it as is since it's "GitAdda". 
+       Actually, removing the heavy "animation" might help it feel more professional. */
+    color: var(--text-primary);
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-coral) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Center Navigation */
+.nav {
+    display: flex;
+    gap: var(--space-8);
+}
+
+.navLink {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.navLink svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.navLink:hover {
+    color: var(--text-primary);
+}
+
+.navLink:hover svg {
+    opacity: 1;
+    color: var(--accent-coral);
+}
+
+/* Remove the underline effect for a cleaner look */
+.navLink::after {
+    display: none;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-4);
+}
+
+.shareBtn {
+    background: var(--text-primary);
+    /* Dark button looks more premium */
+    color: var(--bg-primary);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    /* Pill shape is very modern */
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.shareBtn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.shareBtn:hover {
+    background: var(--accent-coral);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.loginBtn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.loginBtn:hover {
+    color: var(--text-primary);
+}
+
+.loginBtn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Avatar */
+.avatar {
+    display: block;
+}
+
+.avatarImg {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 2px solid var(--border-default);
+    transition: var(--transition-fast);
+}
+
+.avatarImg:hover {
+    border-color: var(--accent-cyan);
+}
+
+.avatarPlaceholder {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    border: 2px solid var(--border-default);
+    transition: var(--transition-fast);
+}
+
+.avatarPlaceholder:hover {
+    border-color: var(--accent-cyan);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr auto;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .shareBtn {
+        display: none;
+    }
+}

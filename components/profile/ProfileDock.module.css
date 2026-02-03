@@ -1,0 +1,114 @@
+.dockContainer {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 0.75rem;
+    background: var(--glass-surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 50;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation: slideLeft 0.5s ease-out forwards;
+}
+
+.dockContainer:hover {
+    background: rgba(var(--background-rgb), 0.8);
+    border-color: rgba(0, 255, 255, 0.2);
+    box-shadow: -12px 12px 40px rgba(0, 255, 255, 0.15);
+}
+
+.dockItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    text-decoration: none;
+}
+
+.dockItem:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(-4px) scale(1.1);
+}
+
+.dockItem.active {
+    color: var(--neon-cyan);
+    background: rgba(0, 255, 255, 0.1);
+}
+
+.dockItem.danger:hover {
+    color: #ff4d4d;
+    background: rgba(255, 77, 77, 0.1);
+}
+
+/* Tooltip (Left side) */
+.dockItem::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--glass-border);
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    margin-right: 0.75rem;
+}
+
+.dockItem:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+.separator {
+    width: 1.5rem;
+    height: 1px;
+    background: var(--glass-border);
+    margin: 0.25rem 0;
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translate(20px, -50%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0, -50%);
+    }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .dockContainer {
+        bottom: 1.5rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .dockItem {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}

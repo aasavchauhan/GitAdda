@@ -1,0 +1,241 @@
+/* Button Container */
+.button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    outline: none;
+    margin-left: 8px;
+    /* Spacing from other stats */
+    position: relative;
+    z-index: 20;
+    /* Ensure button stays above card content if needed */
+}
+
+.button:hover {
+    transform: scale(1.1);
+    background: rgba(59, 130, 246, 0.15);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+.button:active {
+    transform: scale(0.9);
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    stroke-width: 2px;
+}
+
+/* Saved State - Blue for bookmark */
+.saved {
+    color: #3b82f6;
+    /* blue-500 */
+    fill: #3b82f6;
+    filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6));
+    animation: bookmarkPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Not Saved State */
+.notSaved {
+    color: rgba(148, 163, 184, 0.8);
+    /* slate-400 */
+    fill: transparent;
+}
+
+.button:hover .notSaved {
+    color: #3b82f6;
+    transform: scale(1.05);
+}
+
+/* Popover Menu */
+.menu {
+    position: absolute;
+    bottom: 130%;
+    /* Pop up above the button */
+    right: -10px;
+    /* Align mostly with button but slightly shifted */
+    width: 240px;
+    background: rgba(15, 23, 42, 0.95);
+    /* High opacity dark bg */
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow:
+        0 10px 25px -5px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    z-index: 50;
+    overflow: hidden;
+    animation: menuSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: bottom right;
+}
+
+.menuHeader {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8;
+    /* slate-400 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.menuList {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+/* Custom Scrollbar */
+.menuList::-webkit-scrollbar {
+    width: 4px;
+}
+
+.menuList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menuList::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.menuItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: #e2e8f0;
+    /* slate-200 */
+    font-size: 14px;
+}
+
+.menuItem:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 2px solid rgba(148, 163, 184, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.menuItem:hover .checkbox {
+    border-color: rgba(148, 163, 184, 0.8);
+}
+
+.checkbox.checked {
+    background: #ec4899;
+    border-color: #ec4899;
+}
+
+.emptyState {
+    padding: 12px;
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+    font-style: italic;
+}
+
+.createRow {
+    padding: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: white;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input:focus {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(236, 72, 153, 0.5);
+    /* pink border on focus */
+}
+
+.input::placeholder {
+    color: #64748b;
+}
+
+.createBtn {
+    background: #ec4899;
+    border: none;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.createBtn:hover:not(:disabled) {
+    background: #db2777;
+    transform: scale(1.05);
+}
+
+.createBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes bookmarkPop {
+    0% {
+        transform: scale(0.8);
+    }
+
+    40% {
+        transform: scale(1.5);
+    }
+
+    70% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes menuSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
