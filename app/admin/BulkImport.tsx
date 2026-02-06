@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Icons } from '@/components/ui/Icons'
 import styles from './page.module.css'
 import { bulkImportRepos } from './actions'
+import { CANONICAL_USE_CASES } from '@/lib/use-cases'
 
 interface BulkImportProps {
     userId: string
@@ -11,13 +12,13 @@ interface BulkImportProps {
 }
 
 const USE_CASES = [
-    'Auto-Detect', 'SaaS', 'AI/ML', 'Backend', 'Frontend', 'DevOps',
-    'Mobile', 'CLI', 'Database', 'API', 'Other'
+    { value: 'auto-detect', label: 'Auto-Detect' },
+    ...CANONICAL_USE_CASES
 ]
 
 export default function BulkImport({ userId, accessToken }: BulkImportProps) {
     const [urls, setUrls] = useState('')
-    const [useCase, setUseCase] = useState('Auto-Detect')
+    const [useCase, setUseCase] = useState('auto-detect')
     const [isProcessing, setIsProcessing] = useState(false)
     const [logs, setLogs] = useState<{ url: string, status: 'success' | 'error', message: string }[]>([])
 
@@ -36,7 +37,7 @@ export default function BulkImport({ userId, accessToken }: BulkImportProps) {
         }
 
         try {
-            const results = await bulkImportRepos(urlList, userId, accessToken, useCase.toLowerCase())
+            const results = await bulkImportRepos(urlList, userId, accessToken, useCase)
             setLogs(results)
         } catch (error) {
             console.error(error)
@@ -60,7 +61,7 @@ export default function BulkImport({ userId, accessToken }: BulkImportProps) {
             'https://github.com/dubinc/dub',
         ]
         setUrls(page8Repos.join('\n'))
-        setUseCase('Auto-Detect')
+        setUseCase('auto-detect')
     }
 
     const loadScrapedPage9 = () => {
@@ -77,7 +78,7 @@ export default function BulkImport({ userId, accessToken }: BulkImportProps) {
             'https://github.com/anthropics/anthropic-sdk-typescript',
         ]
         setUrls(page9Repos.join('\n'))
-        setUseCase('AI/ML')
+        setUseCase('ai-ml')
     }
 
     const loadScrapedPage10 = () => {
@@ -94,7 +95,7 @@ export default function BulkImport({ userId, accessToken }: BulkImportProps) {
             'https://github.com/TanStack/query',
         ]
         setUrls(page10Repos.join('\n'))
-        setUseCase('Frontend')
+        setUseCase('frontend')
     }
 
     const loadScrapedPage11 = () => {
@@ -111,7 +112,7 @@ export default function BulkImport({ userId, accessToken }: BulkImportProps) {
             'https://github.com/nginx/nginx',
         ]
         setUrls(page11Repos.join('\n'))
-        setUseCase('DevOps')
+        setUseCase('devops')
     }
 
     const loadScrapedPage12 = () => {
@@ -128,7 +129,7 @@ export default function BulkImport({ userId, accessToken }: BulkImportProps) {
             'https://github.com/n8n-io/n8n',
         ]
         setUrls(page12Repos.join('\n'))
-        setUseCase('SaaS')
+        setUseCase('saas')
     }
 
     const loadTrendShiftRepos = () => {
@@ -165,7 +166,7 @@ export default function BulkImport({ userId, accessToken }: BulkImportProps) {
             'https://github.com/browserbase/stagehand',
         ]
         setUrls(trendRepos.join('\n'))
-        setUseCase('Auto-Detect')
+        setUseCase('auto-detect')
     }
 
     const successCount = logs.filter(l => l.status === 'success').length
@@ -233,8 +234,10 @@ export default function BulkImport({ userId, accessToken }: BulkImportProps) {
                         value={useCase}
                         onChange={(e) => setUseCase(e.target.value)}
                     >
-                        {USE_CASES.map(uc => (
-                            <option key={uc} value={uc}>{uc}</option>
+                        {USE_CASES.map((useCaseOption) => (
+                            <option key={useCaseOption.value} value={useCaseOption.value}>
+                                {useCaseOption.label}
+                            </option>
                         ))}
                     </select>
                 </div>

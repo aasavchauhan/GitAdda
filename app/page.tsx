@@ -6,16 +6,17 @@ import { Icons } from '@/components/ui/Icons'
 import RecentRepos from '@/components/home/RecentRepos'
 import { Suspense } from 'react'
 import RepoCardSkeleton from '@/components/ui/RepoCardSkeleton'
+import { USE_CASE_LABELS, UseCaseValue } from '@/lib/use-cases'
 
-const USE_CASES = [
-  { label: 'SaaS', icon: <Icons.Cloud />, query: 'saas' },
-  { label: 'AI/ML', icon: <Icons.Cpu />, query: 'ai' },
-  { label: 'Backend', icon: <Icons.Terminal />, query: 'backend' },
-  { label: 'Frontend', icon: <Icons.Layout />, query: 'frontend' },
-  { label: 'DevTools', icon: <Icons.Terminal />, query: 'devtools' },
-  { label: 'Mobile', icon: <Icons.Smartphone />, query: 'mobile' },
-  { label: 'Auth', icon: <Icons.Lock />, query: 'auth' },
-  { label: 'Database', icon: <Icons.Database />, query: 'database' },
+const USE_CASES: Array<{ value: UseCaseValue; icon: JSX.Element }> = [
+  { value: 'saas', icon: <Icons.Cloud /> },
+  { value: 'ai-ml', icon: <Icons.Cpu /> },
+  { value: 'backend', icon: <Icons.Terminal /> },
+  { value: 'frontend', icon: <Icons.Layout /> },
+  { value: 'devtools', icon: <Icons.Terminal /> },
+  { value: 'mobile', icon: <Icons.Smartphone /> },
+  { value: 'auth', icon: <Icons.Lock /> },
+  { value: 'database', icon: <Icons.Database /> },
 ]
 
 const FEATURES = [
@@ -78,12 +79,12 @@ export default async function HomePage() {
           <div className={styles.useCases}>
             {USE_CASES.map((useCase) => (
               <Link
-                key={useCase.query}
-                href={`/explore?use_case=${useCase.query}`}
+                key={useCase.value}
+                href={`/explore?use_case=${useCase.value}`}
                 className={styles.useCase}
               >
                 <span className={styles.iconWrapper}>{useCase.icon}</span>
-                <span>{useCase.label}</span>
+                <span>{USE_CASE_LABELS[useCase.value]}</span>
               </Link>
             ))}
           </div>

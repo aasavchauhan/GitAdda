@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import styles from './page.module.css'
+import { normalizeUseCase, USE_CASE_LABELS, UseCaseValue } from '@/lib/use-cases'
 
 export default function ExploreFilters() {
     const router = useRouter()
@@ -10,7 +11,7 @@ export default function ExploreFilters() {
 
     // Initial state from URL
     const initialQuery = searchParams.get('q') || ''
-    const initialUseCase = searchParams.get('use_case') || ''
+    const initialUseCase = normalizeUseCase(searchParams.get('use_case')) || ''
 
     const [query, setQuery] = useState(initialQuery)
     const [useCase, setUseCase] = useState(initialUseCase)
@@ -43,15 +44,15 @@ export default function ExploreFilters() {
         updateFilters(query, newUseCase)
     }
 
-    const tags = [
+    const tags: Array<{ label: string; value: UseCaseValue | '' }> = [
         { label: 'All', value: '' },
-        { label: 'SaaS', value: 'saas' },
-        { label: 'AI/ML', value: 'ai/ml' },
-        { label: 'Backend', value: 'backend' },
-        { label: 'Frontend', value: 'frontend' },
-        { label: 'DevOps', value: 'devops' },
-        { label: 'Mobile', value: 'mobile' },
-        { label: 'Tools', value: 'tools' },
+        { label: USE_CASE_LABELS.saas, value: 'saas' },
+        { label: USE_CASE_LABELS['ai-ml'], value: 'ai-ml' },
+        { label: USE_CASE_LABELS.backend, value: 'backend' },
+        { label: USE_CASE_LABELS.frontend, value: 'frontend' },
+        { label: USE_CASE_LABELS.devops, value: 'devops' },
+        { label: USE_CASE_LABELS.mobile, value: 'mobile' },
+        { label: USE_CASE_LABELS.devtools, value: 'devtools' },
     ]
 
     return (
