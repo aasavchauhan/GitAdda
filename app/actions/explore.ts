@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { normalizeUseCase } from '@/lib/use-cases'
 
 const PAGE_SIZE = 12
 
@@ -33,8 +34,9 @@ export async function fetchPaginatedRepos({
         .order('shared_at', { ascending: false })
         .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1)
 
-    if (useCase) {
-        dbQuery = dbQuery.eq('use_case', useCase)
+    const normalizedUseCase = normalizeUseCase(useCase)
+    if (normalizedUseCase) {
+        dbQuery = dbQuery.eq('use_case', normalizedUseCase)
     }
 
     if (query) {

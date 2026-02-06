@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Icons } from '@/components/ui/Icons'
 import styles from './page.module.css'
+import { CANONICAL_USE_CASES } from '@/lib/use-cases'
 
 interface ShareFormProps {
     userId: string
@@ -27,10 +28,7 @@ interface GitHubRepo {
     }
 }
 
-const USE_CASES = [
-    'SaaS', 'AI/ML', 'Backend', 'Frontend', 'DevOps',
-    'Mobile', 'CLI', 'Database', 'API', 'Other'
-]
+const USE_CASES = CANONICAL_USE_CASES
 
 export default function ShareForm({ userId, accessToken, githubUsername }: ShareFormProps) {
     const router = useRouter()
@@ -142,7 +140,7 @@ export default function ShareForm({ userId, accessToken, githubUsername }: Share
                 forks: selectedRepo.forks_count,
                 languages: selectedRepo.language ? [selectedRepo.language] : [],
                 topics: selectedRepo.topics || [],
-                use_case: useCase.toLowerCase(),
+                use_case: useCase,
                 purpose: whyShare || null,
             }).select().single()
 
@@ -312,15 +310,15 @@ export default function ShareForm({ userId, accessToken, githubUsername }: Share
                     <div className={styles.section}>
                         <label className={styles.label}>What's the use case?</label>
                         <div className={styles.useCases}>
-                            {USE_CASES.map(uc => (
+                            {USE_CASES.map((useCaseOption) => (
                                 <button
-                                    key={uc}
+                                    key={useCaseOption.value}
                                     type="button"
-                                    className={`${styles.useCaseBtn} ${useCase === uc ? styles.useCaseActive : ''}`}
-                                    onClick={() => setUseCase(uc)}
+                                    className={`${styles.useCaseBtn} ${useCase === useCaseOption.value ? styles.useCaseActive : ''}`}
+                                    onClick={() => setUseCase(useCaseOption.value)}
                                     disabled={submitting}
                                 >
-                                    {uc}
+                                    {useCaseOption.label}
                                 </button>
                             ))}
                         </div>

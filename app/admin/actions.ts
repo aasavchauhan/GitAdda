@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { normalizeUseCase } from '@/lib/use-cases'
 
 interface ImportResult {
     url: string
@@ -71,7 +72,9 @@ export async function bulkImportRepos(
             // We proceed to insert.
 
             // 4. Intelligent Use Case Inference
-            let finalUseCase = defaultUseCase === 'Auto-Detect' ? 'Other' : defaultUseCase
+            const normalizedDefault = normalizeUseCase(defaultUseCase)
+            const shouldAutoDetect = !normalizedDefault
+            let finalUseCase = normalizedDefault || 'other'
 
             // Helper to check if topics contain any of the keywords
             const hasTopic = (keywords: string[]) => {
@@ -81,23 +84,25 @@ export async function bulkImportRepos(
 
             const language = (data.language || '').toLowerCase()
 
-            if (hasTopic(['ai', 'machine-learning', 'gpt', 'llm', 'neural', 'deep-learning', 'openai'])) {
-                finalUseCase = 'AI/ML'
-            } else if (hasTopic(['database', 'sql', 'nosql', 'postgres', 'mongo', 'redis', 'db'])) {
-                finalUseCase = 'Database'
-            } else if (hasTopic(['ui', 'component', 'design-system', 'css', 'tailwind', 'frontend', 'react', 'vue', 'svelte', 'angular'])) {
-                finalUseCase = 'Frontend'
-            } else if (hasTopic(['api', 'server', 'backend', 'express', 'nest', 'django', 'flask', 'fastapi'])) {
-                finalUseCase = 'Backend'
-            } else if (hasTopic(['cli', 'terminal', 'command-line', 'shell', 'bash'])) {
-                finalUseCase = 'CLI'
-            } else if (hasTopic(['mobile', 'android', 'ios', 'flutter', 'react-native', 'swift', 'kotlin'])) {
-                finalUseCase = 'Mobile'
-            } else if (hasTopic(['devops', 'docker', 'kubernetes', 'aws', 'cloud', 'terraform', 'ci', 'cd'])) {
-                finalUseCase = 'DevOps'
-            } else if (language === 'typescript' || language === 'javascript') {
-                // Heuristics for JS/TS if no topics
-                if (data.name.includes('ui') || data.name.includes('design')) finalUseCase = 'Frontend'
+            if (shouldAutoDetect) {
+                if (hasTopic(['ai', 'machine-learning', 'gpt', 'llm', 'neural', 'deep-learning', 'openai'])) {
+                    finalUseCase = 'ai-ml'
+                } else if (hasTopic(['database', 'sql', 'nosql', 'postgres', 'mongo', 'redis', 'db'])) {
+                    finalUseCase = 'database'
+                } else if (hasTopic(['ui', 'component', 'design-system', 'css', 'tailwind', 'frontend', 'react', 'vue', 'svelte', 'angular'])) {
+                    finalUseCase = 'frontend'
+                } else if (hasTopic(['api', 'server', 'backend', 'express', 'nest', 'django', 'flask', 'fastapi'])) {
+                    finalUseCase = 'backend'
+                } else if (hasTopic(['cli', 'terminal', 'command-line', 'shell', 'bash'])) {
+                    finalUseCase = 'cli'
+                } else if (hasTopic(['mobile', 'android', 'ios', 'flutter', 'react-native', 'swift', 'kotlin'])) {
+                    finalUseCase = 'mobile'
+                } else if (hasTopic(['devops', 'docker', 'kubernetes', 'aws', 'cloud', 'terraform', 'ci', 'cd'])) {
+                    finalUseCase = 'devops'
+                } else if (language === 'typescript' || language === 'javascript') {
+                    // Heuristics for JS/TS if no topics
+                    if (data.name.includes('ui') || data.name.includes('design')) finalUseCase = 'frontend'
+                }
             }
 
             const { error: insertError } = await supabase.from('repositories').insert({
