@@ -1,8 +1,16 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
+import SearchAutocomplete from '@/components/ui/SearchAutocomplete'
 import styles from './page.module.css'
+
+const SORT_OPTIONS = [
+    { label: 'Recent', value: 'recent' },
+    { label: '⭐ Stars', value: 'stars' },
+    { label: '🔀 Forks', value: 'forks' },
+    { label: '🔥 Trending', value: 'trending' },
+]
 
 export default function ExploreFilters() {
     const router = useRouter()
@@ -11,36 +19,35 @@ export default function ExploreFilters() {
     // Initial state from URL
     const initialQuery = searchParams.get('q') || ''
     const initialUseCase = searchParams.get('use_case') || ''
+    const initialSort = searchParams.get('sort') || 'recent'
 
     const [query, setQuery] = useState(initialQuery)
     const [useCase, setUseCase] = useState(initialUseCase)
-    const [isPending, setIsPending] = useState(false)
+    const [sort, setSort] = useState(initialSort)
 
-    // Debounce search update
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (query !== initialQuery) {
-                updateFilters(query, useCase)
-            }
-        }, 500)
-
-        return () => clearTimeout(timer)
-    }, [query])
-
-    const updateFilters = useCallback((newQuery: string, newUseCase: string) => {
-        setIsPending(true)
+    const updateFilters = useCallback((newQuery: string, newUseCase: string, newSort: string) => {
         const params = new URLSearchParams()
         if (newQuery) params.set('q', newQuery)
         if (newUseCase) params.set('use_case', newUseCase)
-
+        if (newSort && newSort !== 'recent') params.set('sort', newSort)
         router.push(`/explore?${params.toString()}`, { scroll: false })
-        setIsPending(false)
     }, [router])
+
+    const handleSearchSubmit = (q: string) => {
+        setQuery(q)
+        updateFilters(q, useCase, sort)
+    }
 
     const handleTagClick = (value: string) => {
         const newUseCase = useCase === value ? '' : value
         setUseCase(newUseCase)
-        updateFilters(query, newUseCase)
+        updateFilters(query, newUseCase, sort)
+    }
+
+    const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newSort = e.target.value
+        setSort(newSort)
+        updateFilters(query, useCase, newSort)
     }
 
     const tags = [
@@ -57,28 +64,46 @@ export default function ExploreFilters() {
     return (
         <div className={styles.filters}>
             <div className={styles.searchForm}>
-                <input
-                    type="text"
+                <SearchAutocomplete
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={setQuery}
+                    onSubmit={handleSearchSubmit}
                     placeholder="Search repositories..."
-                    className={styles.searchInput}
+                    inputClassName={styles.searchInput}
                 />
-                <button className={`${styles.searchBtn} ${isPending ? styles.pending : ''}`} disabled={isPending}>
-                    {isPending ? 'Search...' : 'Search'}
+                <button
+                    className={styles.searchBtn}
+                    onClick={() => handleSearchSubmit(query)}
+                >
+                    Search
                 </button>
             </div>
 
-            <div className={styles.tags}>
-                {tags.map(tag => (
-                    <button
-                        key={tag.value}
-                        onClick={() => handleTagClick(tag.value)}
-                        className={`${styles.tag} ${useCase === tag.value ? styles.tagActive : ''}`}
-                    >
-                        {tag.label}
-                    </button>
-                ))}
+            <div className={styles.filtersRow}>
+                <div className={styles.tags}>
+                    {tags.map(tag => (
+                        <button
+                            key={tag.value}
+                            onClick={() => handleTagClick(tag.value)}
+                            className={`${styles.tag} ${useCase === tag.value ? styles.tagActive : ''}`}
+                        >
+                            {tag.label}
+                        </button>
+                    ))}
+                </div>
+
+                <select
+                    className={styles.sortSelect}
+                    value={sort}
+                    onChange={handleSortChange}
+                    aria-label="Sort by"
+                >
+                    {SORT_OPTIONS.map(opt => (
+                        <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                        </option>
+                    ))}
+                </select>
             </div>
         </div>
     )

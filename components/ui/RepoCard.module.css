@@ -159,6 +159,74 @@
     border-radius: var(--radius-full);
     font-weight: 500;
     border: 1px solid rgba(136, 146, 176, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.langDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Freshness badge */
+.freshness {
+    font-size: var(--text-xs);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.freshnessDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.freshness.hot {
+    background: rgba(0, 200, 83, 0.12);
+    color: #00c853;
+    border: 1px solid rgba(0, 200, 83, 0.25);
+}
+
+.freshness.hot .freshnessDot {
+    background: #00c853;
+    box-shadow: 0 0 4px #00c853;
+}
+
+.freshness.warm {
+    background: rgba(0, 229, 204, 0.1);
+    color: var(--accent-cyan);
+    border: 1px solid rgba(0, 229, 204, 0.2);
+}
+
+.freshness.warm .freshnessDot {
+    background: var(--accent-cyan);
+}
+
+.freshness.cool {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.freshness.cool .freshnessDot {
+    background: #ffc107;
+}
+
+.freshness.stale {
+    background: rgba(136, 146, 176, 0.08);
+    color: var(--text-muted);
+    border: 1px solid rgba(136, 146, 176, 0.15);
+}
+
+.freshness.stale .freshnessDot {
+    background: var(--text-muted);
 }
 
 .stats {
@@ -225,16 +293,34 @@
     }
 }
 
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
 .skeleton {
-    background: rgba(136, 146, 176, 0.1);
+    background: linear-gradient(90deg,
+            rgba(136, 146, 176, 0.08) 0%,
+            rgba(136, 146, 176, 0.15) 50%,
+            rgba(136, 146, 176, 0.08) 100%);
+    background-size: 200% 100%;
     border-radius: var(--radius-md);
-    animation: pulse 1.5s infinite ease-in-out;
+    animation: shimmer 1.5s infinite ease-in-out;
 }
 
 .skeletonText {
     height: 1em;
     margin-bottom: 0.5em;
-    background: rgba(136, 146, 176, 0.1);
+    background: linear-gradient(90deg,
+            rgba(136, 146, 176, 0.08) 0%,
+            rgba(136, 146, 176, 0.15) 50%,
+            rgba(136, 146, 176, 0.08) 100%);
+    background-size: 200% 100%;
     border-radius: var(--radius-sm);
-    animation: pulse 1.5s infinite ease-in-out;
+    animation: shimmer 1.5s infinite ease-in-out;
 }

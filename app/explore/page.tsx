@@ -5,11 +5,11 @@ import { Suspense } from 'react'
 import RepoCardSkeleton from '@/components/ui/RepoCardSkeleton'
 
 interface ExplorePageProps {
-    searchParams: Promise<{ q?: string; use_case?: string }>
+    searchParams: Promise<{ q?: string; use_case?: string; sort?: string }>
 }
 
 export default async function ExplorePage({ searchParams }: ExplorePageProps) {
-    const { q: query = '', use_case: useCase = '' } = await searchParams
+    const { q: query = '', use_case: useCase = '', sort = 'recent' } = await searchParams
 
     return (
         <main className={styles.main}>
@@ -35,7 +35,7 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
                         ))}
                     </div>
                 }>
-                    <ExploreRepoList query={query} useCase={useCase} />
+                    <ExploreRepoList query={query} useCase={useCase} sort={sort} />
                 </Suspense>
             </div>
         </main>

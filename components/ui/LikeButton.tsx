@@ -11,6 +11,7 @@ interface LikeButtonProps {
     repoId: string
     initialLikes?: number
     initialIsLiked?: boolean
+    hasPrefetchedData?: boolean
     className?: string
     size?: 'sm' | 'md'
 }
@@ -19,6 +20,7 @@ export default function LikeButton({
     repoId,
     initialLikes = 0,
     initialIsLiked = false,
+    hasPrefetchedData = false,
     className,
     size = 'sm'
 }: LikeButtonProps) {
@@ -29,13 +31,16 @@ export default function LikeButton({
     const router = useRouter()
 
     useEffect(() => {
+        // Skip fetch if data was batch-prefetched by the parent
+        if (hasPrefetchedData) return
+
         getLikeStatus(repoId).then((status) => {
             setIsLiked(status.isLiked)
             setLikesCount(status.count)
         }).catch(() => {
             // Silent fail - user may not be logged in
         })
-    }, [repoId])
+    }, [repoId, hasPrefetchedData])
 
     const handleToggle = async (e: React.MouseEvent) => {
         e.preventDefault()

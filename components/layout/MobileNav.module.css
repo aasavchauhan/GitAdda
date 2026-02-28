@@ -1,0 +1,120 @@
+.mobileNav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(10, 14, 23, 0.92);
+    border-top: 1px solid rgba(136, 146, 176, 0.1);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: var(--space-1) var(--space-2);
+    padding-bottom: calc(var(--space-1) + env(safe-area-inset-bottom, 0px));
+    justify-content: space-around;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .mobileNav {
+        display: flex;
+    }
+}
+
+/* Individual nav item */
+.navItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: var(--space-2) var(--space-3);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    position: relative;
+    border-radius: var(--radius-md);
+    min-width: 56px;
+}
+
+.navItem svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.2s ease;
+}
+
+.navLabel {
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    opacity: 0.8;
+}
+
+/* Active state */
+.active {
+    color: var(--accent-cyan);
+}
+
+.active svg {
+    transform: scale(1.1);
+}
+
+.active .navLabel {
+    opacity: 1;
+    font-weight: 600;
+}
+
+.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: var(--accent-cyan);
+    border-radius: 0 0 2px 2px;
+}
+
+/* Center FAB button */
+.fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin-top: -20px;
+    /* Float above */
+    position: relative;
+}
+
+.fabInner {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-coral));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow:
+        0 4px 15px rgba(0, 229, 204, 0.3),
+        0 0 25px rgba(0, 229, 204, 0.1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fabInner svg {
+    width: 22px;
+    height: 22px;
+}
+
+.fab:hover .fabInner {
+    transform: scale(1.08);
+    box-shadow:
+        0 6px 20px rgba(0, 229, 204, 0.4),
+        0 0 35px rgba(0, 229, 204, 0.15);
+}
+
+.fab:active .fabInner {
+    transform: scale(0.95);
+}

@@ -42,10 +42,22 @@ export default function DeveloperCard({ developer, rank }: { developer: Develope
                 </div>
 
                 {/* Stats */}
-                <div className="flex gap-4 mb-4">
-                    <div className="flex items-center gap-1.5 text-sm text-[var(--text-secondary)]">
-                        <FolderGit2 className="w-4 h-4 text-[var(--accent-coral)]" />
-                        <span>{developer.collections_count} Collections</span>
+                <div className="flex gap-4 mb-4 flex-wrap justify-center">
+                    <div className="flex items-center gap-1.5 text-sm text-[var(--text-secondary)]" title="Repos Shared">
+                        <FolderGit2 className="w-4 h-4 text-[var(--accent-cyan)]" />
+                        <span>{developer.shared_count}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-sm text-[var(--text-secondary)]" title="Followers">
+                        <svg className="w-4 h-4 text-[var(--accent-coral)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <span>{developer.follower_count}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-sm text-[var(--text-secondary)]" title="Likes Received">
+                        <svg className="w-4 h-4 text-[var(--accent-coral)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
+                        <span>{developer.likes_received}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-sm text-[var(--text-secondary)]" title="Collections">
+                        <FolderGit2 className="w-4 h-4 text-[var(--accent-primary)]" />
+                        <span>{developer.collections_count}</span>
                     </div>
                 </div>
 

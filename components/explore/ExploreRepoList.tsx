@@ -1,15 +1,22 @@
-import { fetchPaginatedRepos } from '@/app/actions/explore'
+import { fetchPaginatedRepos, SortOption } from '@/app/actions/explore'
+import { getBatchLikeData } from '@/app/actions/likes'
 import InfiniteRepoGrid from './InfiniteRepoGrid'
 import styles from '@/app/explore/page.module.css'
 
 interface ExploreRepoListProps {
     query?: string
     useCase?: string
+    sort?: string
 }
 
-export default async function ExploreRepoList({ query = '', useCase = '' }: ExploreRepoListProps) {
+export default async function ExploreRepoList({ query = '', useCase = '', sort = 'recent' }: ExploreRepoListProps) {
     // Fetch initial page on the server
-    const { repos, hasMore } = await fetchPaginatedRepos({ query, useCase, page: 0 })
+    const { repos, hasMore } = await fetchPaginatedRepos({
+        query,
+        useCase,
+        page: 0,
+        sort: sort as SortOption
+    })
 
     if (!repos || repos.length === 0) {
         const SUGGESTED_TAGS = ['React', 'Next.js', 'TypeScript', 'AI', 'Tools', 'Design']
@@ -40,12 +47,19 @@ export default async function ExploreRepoList({ query = '', useCase = '' }: Expl
         )
     }
 
+    // Batch-fetch like data for SSR initial repos (eliminates N+1)
+    const repoIds = repos.map(r => r.id)
+    const initialLikeData = await getBatchLikeData(repoIds)
+
     return (
         <InfiniteRepoGrid
             initialRepos={repos}
             query={query}
             useCase={useCase}
+            sort={sort}
             hasMore={hasMore}
+            initialLikeData={initialLikeData}
         />
     )
 }
+

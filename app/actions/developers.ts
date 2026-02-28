@@ -12,6 +12,10 @@ export type Developer = {
     tech_stack: string[] | null
     github_username: string | null
     collections_count: number
+    shared_count: number
+    follower_count: number
+    likes_received: number
+    score: number
 }
 
 export const getTopDevelopers = cache(async (): Promise<Developer[]> => {
@@ -29,41 +33,85 @@ export const getTopDevelopers = cache(async (): Promise<Developer[]> => {
             tech_stack,
             github_username
         `)
-        .limit(20)
+        .limit(50)
 
     if (error) {
         console.error('Error fetching developers:', error)
         return []
     }
 
-    // Since we can't easily do a count join in one go without a view or rpc in simple query builder,
-    // we'll fetch collection counts separately or just mock it for now to save time if performance isn't critical yet.
-    // A better approach is to use .select('*, collections(count)') if relations are set up, but let's try the safe simple way first.
-
-    // For now, let's just return profiles and 0 counts, or try to fetch counts if we can.
-    // Checking relations might be complex without knowing them.
-    // Let's standardly fetch collections count for these users.
-
-    // Efficient way: Fetch all collections for these user IDs and aggregate in JS
     const userIds = profiles.map(p => p.id)
-    const { data: collections } = await supabase
-        .from('collections')
-        .select('created_by')
-        .in('created_by', userIds)
 
-    const collectionCounts = (collections || []).reduce((acc, curr) => {
-        // created_by is the column name for the user ID in collections table
-        const userId = curr.created_by
-        acc[userId] = (acc[userId] || 0) + 1
-        return acc
-    }, {} as Record<string, number>)
+    // Fetch all counts in parallel (4 queries)
+    const [collectionsRes, reposRes, followsRes, likesRes] = await Promise.all([
+        // Collections count
+        supabase
+            .from('collections')
+            .select('created_by')
+            .in('created_by', userIds),
+        // Shared repos count
+        supabase
+            .from('repositories')
+            .select('shared_by')
+            .in('shared_by', userIds),
+        // Follower count
+        supabase
+            .from('follows')
+            .select('following_id')
+            .in('following_id', userIds),
+        // Likes received (likes on repos they shared)
+        supabase
+            .from('likes')
+            .select('repository_id, repositories!inner(shared_by)')
+            .in('repositories.shared_by', userIds)
+    ])
 
-    const developers: Developer[] = profiles.map(profile => ({
-        ...profile,
-        tech_stack: Array.isArray(profile.tech_stack) ? profile.tech_stack : [],
-        collections_count: collectionCounts[profile.id] || 0
-    }))
+    // Build count maps
+    const countMap = (rows: any[] | null, key: string) => {
+        const map: Record<string, number> = {}
+        for (const row of rows || []) {
+            const k = row[key]
+            map[k] = (map[k] || 0) + 1
+        }
+        return map
+    }
 
-    // Sort by collections count descending
-    return developers.sort((a, b) => b.collections_count - a.collections_count)
+    const collectionCounts = countMap(collectionsRes.data, 'created_by')
+    const repoCounts = countMap(reposRes.data, 'shared_by')
+    const followerCounts = countMap(followsRes.data, 'following_id')
+
+    // Likes received — grouped by repo owner
+    const likesReceivedMap: Record<string, number> = {}
+    for (const like of likesRes.data || []) {
+        const ownerId = (like as any).repositories?.shared_by
+        if (ownerId) {
+            likesReceivedMap[ownerId] = (likesReceivedMap[ownerId] || 0) + 1
+        }
+    }
+
+    // Weighted score: repos ×3, followers ×2, likes ×1, collections ×1
+    const developers: Developer[] = profiles.map(profile => {
+        const shared_count = repoCounts[profile.id] || 0
+        const follower_count = followerCounts[profile.id] || 0
+        const likes_received = likesReceivedMap[profile.id] || 0
+        const collections_count = collectionCounts[profile.id] || 0
+
+        const score = (shared_count * 3) + (follower_count * 2) + likes_received + collections_count
+
+        return {
+            ...profile,
+            tech_stack: Array.isArray(profile.tech_stack) ? profile.tech_stack : [],
+            collections_count,
+            shared_count,
+            follower_count,
+            likes_received,
+            score
+        }
+    })
+
+    // Sort by score descending, then filter out zero-activity users
+    return developers
+        .filter(d => d.score > 0)
+        .sort((a, b) => b.score - a.score)
 })
+

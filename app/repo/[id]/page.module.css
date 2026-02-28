@@ -58,27 +58,6 @@
     color: var(--neon-cyan);
 }
 
-/* Language Color Variables */
-:root {
-    --lang-typescript: #3178c6;
-    --lang-javascript: #f7df1e;
-    --lang-python: #3572A5;
-    --lang-rust: #dea584;
-    --lang-go: #00ADD8;
-    --lang-java: #b07219;
-    --lang-ruby: #701516;
-    --lang-php: #4F5D95;
-    --lang-swift: #F05138;
-    --lang-kotlin: #A97BFF;
-    --lang-csharp: #178600;
-    --lang-cpp: #f34b7d;
-    --lang-c: #555555;
-    --lang-html: #e34c26;
-    --lang-css: #563d7c;
-    --lang-vue: #41b883;
-    --lang-default: var(--accent-coral);
-}
-
 /* Header Card */
 .header {
     --lang-color: var(--lang-default);

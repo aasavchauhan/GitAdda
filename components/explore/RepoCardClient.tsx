@@ -5,6 +5,7 @@ import { Icons } from '@/components/ui/Icons'
 import styles from '@/components/ui/RepoCard.module.css'
 import LikeButton from '@/components/ui/LikeButton'
 import QuickSaveButton from '@/components/collections/QuickSaveButton'
+import { freshnessScore, freshnessLabel, getLanguageColor } from '@/lib/github'
 
 interface RepoCardClientProps {
     id: string
@@ -15,6 +16,9 @@ interface RepoCardClientProps {
     forks: number
     use_case?: string | null
     purpose?: string | null
+    primary_language?: string | null
+    last_updated?: string | null
+    likeData?: { count: number; isLiked: boolean }
 }
 
 export default function RepoCardClient({
@@ -25,9 +29,14 @@ export default function RepoCardClient({
     stars,
     forks,
     use_case,
-    purpose
+    purpose,
+    primary_language,
+    last_updated,
+    likeData
 }: RepoCardClientProps) {
     const ogUrl = `https://opengraph.githubassets.com/1/${owner}/${name}`
+    const freshScore = freshnessScore(last_updated || null)
+    const fresh = freshnessLabel(freshScore)
 
     // Clean text for comparison
     const cleanDesc = (description || '').toLowerCase().trim()
@@ -74,8 +83,23 @@ export default function RepoCardClient({
 
                 <div className={styles.meta}>
                     <div className={styles.badges}>
+                        {last_updated && (
+                            <span className={`${styles.freshness} ${styles[fresh.level]}`}>
+                                <span className={styles.freshnessDot} />
+                                {fresh.label}
+                            </span>
+                        )}
                         {use_case && (
                             <span className={styles.useCase}>{use_case}</span>
+                        )}
+                        {primary_language && (
+                            <span className={styles.language}>
+                                <span
+                                    className={styles.langDot}
+                                    style={{ backgroundColor: getLanguageColor(primary_language) }}
+                                />
+                                {primary_language}
+                            </span>
                         )}
                     </div>
 
@@ -93,7 +117,7 @@ export default function RepoCardClient({
                 </div>
             </Link>
             <div className={styles.actions}>
-                <LikeButton repoId={id} initialLikes={0} />
+                <LikeButton repoId={id} initialLikes={likeData?.count ?? 0} initialIsLiked={likeData?.isLiked ?? false} hasPrefetchedData={!!likeData} />
                 <QuickSaveButton
                     repoId={id}
                     initialSavedCollectionIds={[]}

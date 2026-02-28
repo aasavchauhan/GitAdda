@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import styles from './page.module.css'
 import HomeSearch from './HomeSearch'
@@ -51,10 +52,26 @@ const FEATURES = [
   },
 ]
 
+// Deterministic daily pick from top repos
+function getDailyIndex(count: number): number {
+  const now = new Date()
+  const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000)
+  return dayOfYear % count
+}
+
 export default async function HomePage() {
-  await createClient()
+  const supabase = await createClient()
 
+  // Fetch top ELO repos for Repo of the Day
+  const { data: topRepos } = await supabase
+    .from('repositories')
+    .select('id, name, owner, description, stars, forks, elo_rating, primary_language')
+    .order('elo_rating', { ascending: false })
+    .limit(7)
 
+  const repoOfTheDay = topRepos && topRepos.length > 0
+    ? topRepos[getDailyIndex(topRepos.length)]
+    : null
 
   return (
     <main className={styles.main}>
@@ -89,6 +106,55 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Repo of the Day */}
+      {repoOfTheDay && (
+        <section className={styles.section}>
+          <div className={styles.container}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionIcon}>🏆</span>
+              <h2 className={styles.sectionTitle}>Repo of the Day</h2>
+            </div>
+
+            <Link href={`/repo/${repoOfTheDay.id}`} className={styles.spotlightCard}>
+              <div className={styles.spotlightCover}>
+                <Image
+                  src={`https://opengraph.githubassets.com/1/${repoOfTheDay.owner}/${repoOfTheDay.name}`}
+                  alt={`${repoOfTheDay.name} preview`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  style={{ objectFit: 'cover' }}
+                  priority
+                />
+              </div>
+              <div className={styles.spotlightBody}>
+                <div className={styles.spotlightHeader}>
+                  <Image
+                    src={`https://github.com/${repoOfTheDay.owner}.png`}
+                    alt={repoOfTheDay.owner}
+                    width={48}
+                    height={48}
+                    className={styles.spotlightAvatar}
+                  />
+                  <div>
+                    <h3 className={styles.spotlightName}>{repoOfTheDay.name}</h3>
+                    <span className={styles.spotlightOwner}>by {repoOfTheDay.owner}</span>
+                  </div>
+                  <span className={styles.spotlightElo}>⚡ {repoOfTheDay.elo_rating} ELO</span>
+                </div>
+                <p className={styles.spotlightDesc}>
+                  {repoOfTheDay.description || 'No description provided.'}
+                </p>
+                <div className={styles.spotlightStats}>
+                  <span>⭐ {repoOfTheDay.stars} Stars</span>
+                  <span>🍴 {repoOfTheDay.forks} Forks</span>
+                  {repoOfTheDay.primary_language && <span>🔤 {repoOfTheDay.primary_language}</span>}
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Features Section */}
       <section className={styles.section}>
@@ -157,7 +223,7 @@ export default async function HomePage() {
           </p>
           <div className={styles.footerLinks}>
             <Link href="https://github.com" target="_blank">GitHub</Link>
-            <Link href="/about">About</Link>
+            <Link href="/explore">Explore</Link>
           </div>
         </div>
       </footer>

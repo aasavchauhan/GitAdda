@@ -460,6 +460,122 @@
 }
 
 /* ========================================
+   REPO OF THE DAY — Spotlight Card
+   ======================================== */
+.spotlightCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(10, 15, 26, 0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid transparent;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
+}
+
+.spotlightCard::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-xl);
+  padding: 1px;
+  background: linear-gradient(135deg, var(--accent-coral), var(--accent-cyan));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.spotlightCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 60px rgba(255, 77, 77, 0.15), 0 8px 30px rgba(0, 229, 204, 0.1);
+  text-decoration: none;
+}
+
+.spotlightCover {
+  position: relative;
+  min-height: 260px;
+  overflow: hidden;
+}
+
+.spotlightBody {
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.spotlightHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.spotlightAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--glass-border);
+}
+
+.spotlightName {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.spotlightOwner {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.spotlightElo {
+  margin-left: auto;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent-cyan);
+  background: rgba(0, 229, 204, 0.1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 229, 204, 0.25);
+}
+
+.spotlightDesc {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.spotlightStats {
+  display: flex;
+  gap: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .spotlightCard {
+    grid-template-columns: 1fr;
+  }
+
+  .spotlightCover {
+    min-height: 180px;
+  }
+}
+
+/* ========================================
    CTA SECTION - MoltBot Newsletter Style
    ======================================== */
 .ctaSection {

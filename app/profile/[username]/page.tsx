@@ -47,12 +47,20 @@ export default async function ProfilePage({ params, searchParams }: ProfilePageP
         .eq('is_public', true)
         .order('created_at', { ascending: false })
 
-    // 4. Counts
+    // 4. Counts - query real follower/following data
+    const [
+        { count: followersCount },
+        { count: followingCount }
+    ] = await Promise.all([
+        supabase.from('follows').select('*', { count: 'exact', head: true }).eq('following_id', profile.id),
+        supabase.from('follows').select('*', { count: 'exact', head: true }).eq('follower_id', profile.id),
+    ])
+
     const counts = {
         repos: reposCount || 0,
         collections: collectionsCount || 0,
-        followers: 0, // Placeholder - add followers table if needed
-        following: 0  // Placeholder
+        followers: followersCount || 0,
+        following: followingCount || 0
     }
 
     // Quick Save Data for Repos

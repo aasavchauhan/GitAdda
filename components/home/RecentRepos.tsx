@@ -1,14 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import RepoCard from '@/components/ui/RepoCard'
 import { getUserDataForQuickSave } from '@/app/actions/collections'
-// We need to import the styles from the page module to reuse grid layout
-// However, importing page.module.css might work but ideally we'd pass classNames or use a shared component.
-// For now, let's assume we can import it or just use inline styles for the grid if necessary?
-// Actually, since this is a server component rendered INSIDE page.tsx, we can't easily use page.module.css classes unless we pass them or duplicate.
-// But wait, page.module.css is largely specific to the page layout.
-// The grid class `.repoGrid` is what we need.
-// Let's modify app/page.tsx to export the styles? No.
-// We should import the styles here.
+import { getBatchLikeData } from '@/app/actions/likes'
 import styles from '@/app/page.module.css'
 import Link from 'next/link'
 
@@ -25,7 +18,10 @@ export default async function RecentRepos() {
         .limit(8)
 
     const repoIds = recentRepos?.map((r: any) => r.id) || []
-    const quickSaveDataPromise = getUserDataForQuickSave(repoIds)
+    const [quickSaveDataPromise, likeDataMap] = await Promise.all([
+        getUserDataForQuickSave(repoIds),
+        getBatchLikeData(repoIds)
+    ])
 
     if (!recentRepos || recentRepos.length === 0) {
         return (
@@ -53,9 +49,13 @@ export default async function RecentRepos() {
                     use_case={repo.use_case}
                     purpose={repo.purpose}
                     languages={repo.languages}
-                    quickSaveDataPromise={quickSaveDataPromise}
+                    primary_language={repo.primary_language}
+                    last_updated={repo.last_updated}
+                    quickSaveDataPromise={Promise.resolve(quickSaveDataPromise)}
+                    likeData={likeDataMap[repo.id]}
                 />
             ))}
         </div>
     )
 }
+

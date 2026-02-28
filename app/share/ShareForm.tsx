@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { shareRepository } from '@/app/actions/share'
 import { useRouter } from 'next/navigation'
 import { Icons } from '@/components/ui/Icons'
 import styles from './page.module.css'
@@ -34,7 +34,6 @@ const USE_CASES = [
 
 export default function ShareForm({ userId, accessToken, githubUsername }: ShareFormProps) {
     const router = useRouter()
-    const supabase = createClient()
 
     const [mode, setMode] = useState<'select' | 'url'>('select')
     const [myRepos, setMyRepos] = useState<GitHubRepo[]>([])
@@ -119,21 +118,7 @@ export default function ShareForm({ userId, accessToken, githubUsername }: Share
         setError('')
 
         try {
-            // Check if already exists
-            const { data: existing } = await supabase
-                .from('repositories')
-                .select('id')
-                .eq('github_url', selectedRepo.html_url)
-                .single()
-
-            if (existing) {
-                setError('This repository is already listed on GitAdda!')
-                setSubmitting(false)
-                return
-            }
-
-            const { data, error: dbError } = await supabase.from('repositories').insert({
-                shared_by: userId,
+            const { id } = await shareRepository({
                 github_url: selectedRepo.html_url,
                 name: selectedRepo.name,
                 owner: selectedRepo.full_name.split('/')[0],
@@ -141,21 +126,20 @@ export default function ShareForm({ userId, accessToken, githubUsername }: Share
                 stars: selectedRepo.stargazers_count,
                 forks: selectedRepo.forks_count,
                 languages: selectedRepo.language ? [selectedRepo.language] : [],
+                primary_language: selectedRepo.language || null,
                 topics: selectedRepo.topics || [],
                 use_case: useCase.toLowerCase(),
                 purpose: whyShare || null,
-            }).select().single()
-
-            if (dbError) throw dbError
+            })
 
             // Show success state briefly before redirect
             setSuccess(true)
 
             // Prefetch the page to speed up the actual navigation
-            router.prefetch(`/repo/${data.id}`)
+            router.prefetch(`/repo/${id}`)
 
             setTimeout(() => {
-                router.push(`/repo/${data.id}`)
+                router.push(`/repo/${id}`)
                 router.refresh()
             }, 1000)
 

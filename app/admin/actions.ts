@@ -104,7 +104,7 @@ export async function bulkImportRepos(
                 shared_by: userId,
                 github_url: data.html_url,
                 name: data.name,
-                owner: data.owner.login, // owner login
+                owner: data.owner.login,
                 description: data.description,
                 stars: data.stargazers_count,
                 forks: data.forks_count,

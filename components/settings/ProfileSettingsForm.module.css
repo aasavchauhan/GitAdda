@@ -9,6 +9,43 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
+/* Toast Notifications */
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+}
+
+.success {
+    background: rgba(0, 255, 128, 0.1);
+    border: 1px solid rgba(0, 255, 128, 0.3);
+    color: #00ff80;
+}
+
+.error {
+    background: rgba(255, 80, 80, 0.1);
+    border: 1px solid rgba(255, 80, 80, 0.3);
+    color: #ff5050;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .header {
     margin-bottom: 2rem;
     padding-bottom: 1rem;

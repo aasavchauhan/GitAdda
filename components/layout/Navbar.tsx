@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Icons } from '@/components/ui/Icons'
+import NotificationBell from '@/components/notifications/NotificationBell'
 import styles from './Navbar.module.css'
 
 export default async function Navbar() {
@@ -41,6 +42,7 @@ export default async function Navbar() {
                             <Link href="/share" className={styles.shareBtn}>
                                 <Icons.Plus /> Share
                             </Link>
+                            <NotificationBell />
                             <Link href={`/profile/${profile?.username || user.id}`} className={styles.avatar}>
                                 {profile?.avatar_url ? (
                                     <img src={profile.avatar_url} alt="Profile" className={styles.avatarImg} />
@@ -62,3 +64,4 @@ export default async function Navbar() {
         </nav>
     )
 }
+

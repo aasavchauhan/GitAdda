@@ -2,27 +2,63 @@
 
 This document outlines planned features and future improvements for the GitAdda platform.
 
-## Future Enhancements (To Be Discussed)
+## ✅ Completed
 
-### 1. AI-Powered "Similar Repos"
+### Advanced Sorting & Filtering
+- Sort by Recent, Stars, Forks, Trending on the Explore page
+- Use-case tag filters (SaaS, AI/ML, Backend, Frontend, DevOps, Mobile, Tools)
+- Full-text search with `tsvector`
+
+### User Collections / Lists
+- Named collections (e.g., "My DevOps Stack", "Favorite React Libraries")
+- Quick-save button on repo cards
+- Collection detail pages
+
+### PWA & Mobile UX
+- Installable PWA with service worker
+- Bottom tab mobile navigation
+- Install prompt banner
+
+### Notifications
+- Real-time notification bell via Supabase Realtime
+- Like, follow, and comment notifications
+
+### Follow System
+- Follow/unfollow users
+- Follower/following counts on profiles
+
+### "Repo of the Day" Spotlight
+- Hero section on the homepage that rotates daily to highlight a top-rated repository
+- Deterministic daily rotation using ELO rankings
+
+### Better Developer Rankings
+- Weighted scoring algorithm (repos shared × 3 + followers × 2 + likes received × 1 + collections × 1)
+- Activity breakdown on developer cards
+
+### Wars Rate Limiting
+- Max 30 votes per user per hour via `war_votes` table
+- Authentication required for all voting
+
+### Batch Like Prefetch
+- Eliminated N+1 like queries with batch fetching on homepage and explore
+
+---
+
+## 🚧 In Progress
+
+### AI-Powered "Similar Repos"
 **Goal:** Improve discovery by suggesting related tools.
 - **Concept:** Show a "Similar Tools" section on repository detail pages (e.g., viewing "Next.js" suggests "Remix").
 - **Implementation:** Could use vector embeddings (via Supabase pgvector) or tag-based matching.
 
-### 2. "Repo of the Day" Spotlight
-**Goal:** Increase user engagement with fresh content.
-- **Concept:** A hero section on the homepage that rotates daily to highlight a high-quality repository.
-- **Implementation:** Automated cron job or manual curation queue.
+---
 
-### 3. Advanced Sorting & Filtering
-**Goal:** Empower users to find exactly what they need.
-- **Concept:** Add sorting options to the Explore page.
-- **Options:** "Most Recently Added", "Most Stars", "Most Forks", "Best Match".
+## 🔮 Future Ideas
 
-### 4. User Collections / Lists
-**Goal:** Enable social curation.
-- **Concept:** Allow users to create and share named lists of repositories (e.g., "My DevOps Stack", "Favorite React Libraries").
-- **Implementation:** New database tables for `collections` and `collection_items`.
+- Activity / trending feed
+- Dark/light theme toggle
+- OAuth token refresh handling
+- Atomic ELO updates via Supabase RPC
 
 ---
-*Last updated: January 2026*
+*Last updated: February 2026*

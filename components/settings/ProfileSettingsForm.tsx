@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { updateProfile } from '@/app/actions/settings'
 import styles from './ProfileSettingsForm.module.css'
 import { useRouter } from 'next/navigation'
-import { Loader2 } from 'lucide-react'
+import { Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 
 interface ProfileSettingsFormProps {
     profile: any
@@ -12,7 +12,13 @@ interface ProfileSettingsFormProps {
 
 export default function ProfileSettingsForm({ profile }: ProfileSettingsFormProps) {
     const [isLoading, setIsLoading] = useState(false)
+    const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
     const router = useRouter()
+
+    const showToast = (type: 'success' | 'error', message: string) => {
+        setToast({ type, message })
+        setTimeout(() => setToast(null), 4000)
+    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -23,10 +29,10 @@ export default function ProfileSettingsForm({ profile }: ProfileSettingsFormProp
         try {
             await updateProfile(formData)
             router.refresh()
-            // Optional: Show toast
+            showToast('success', 'Profile saved successfully!')
         } catch (error) {
             console.error(error)
-            // Optional: Show error
+            showToast('error', 'Failed to save profile. Please try again.')
         } finally {
             setIsLoading(false)
         }
@@ -34,6 +40,13 @@ export default function ProfileSettingsForm({ profile }: ProfileSettingsFormProp
 
     return (
         <div className={styles.formContainer}>
+            {toast && (
+                <div className={`${styles.toast} ${styles[toast.type]}`}>
+                    {toast.type === 'success' ? <CheckCircle size={18} /> : <AlertCircle size={18} />}
+                    <span>{toast.message}</span>
+                </div>
+            )}
+
             <div className={styles.header}>
                 <h1 className={styles.title}>Edit Profile</h1>
                 <p className={styles.subtitle}>Update your personal information and developer status.</p>
@@ -60,6 +73,7 @@ export default function ProfileSettingsForm({ profile }: ProfileSettingsFormProp
                         name="bio"
                         defaultValue={profile.bio || ''}
                         placeholder="Tell us about yourself..."
+                        rows={3}
                     />
                 </div>
 
@@ -74,42 +88,6 @@ export default function ProfileSettingsForm({ profile }: ProfileSettingsFormProp
                         placeholder="e.g. React, Node.js, TypeScript (comma separated)"
                     />
                     <span className={styles.helperText}>Separate technologies with commas</span>
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label className={styles.label} htmlFor="location">Location</label>
-                    <input
-                        className={styles.input}
-                        type="text"
-                        id="location"
-                        name="location"
-                        defaultValue={profile.location || ''}
-                        placeholder="e.g. San Francisco, CA"
-                    />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label className={styles.label} htmlFor="website_url">Website URL</label>
-                    <input
-                        className={styles.input}
-                        type="url"
-                        id="website_url"
-                        name="website_url"
-                        defaultValue={profile.website_url || ''}
-                        placeholder="https://your-website.com"
-                    />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label className={styles.label} htmlFor="github_username">GitHub Username</label>
-                    <input
-                        className={styles.input}
-                        type="text"
-                        id="github_username"
-                        name="github_username"
-                        defaultValue={profile.github_username || ''}
-                        placeholder="github_username"
-                    />
                 </div>
 
                 <div className={styles.checkboxGroup}>

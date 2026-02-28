@@ -1,5 +1,12 @@
-import { type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
+
+// Polyfill __dirname for Edge Runtime compatibility
+if (typeof __dirname === 'undefined') {
+    (globalThis as any).__dirname = '/'
+}
+if (typeof __filename === 'undefined') {
+    (globalThis as any).__filename = '/'
+}
 
 export async function middleware(request: NextRequest) {
     return await updateSession(request)
