@@ -1,15 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-// Polyfill __dirname for Edge Runtime compatibility
-if (typeof __dirname === 'undefined') {
-    (globalThis as any).__dirname = '/'
-}
-if (typeof __filename === 'undefined') {
-    (globalThis as any).__filename = '/'
-}
-
-
 export async function updateSession(request: NextRequest) {
     let supabaseResponse = NextResponse.next({
         request,
@@ -44,14 +35,6 @@ export async function updateSession(request: NextRequest) {
                         )
                     },
                 },
-                auth: {
-                    autoRefreshToken: false,
-                    persistSession: true,
-                    detectSessionInUrl: false,
-                },
-                realtime: {
-                    transport: undefined,
-                },
             }
         )
 
@@ -63,4 +46,3 @@ export async function updateSession(request: NextRequest) {
 
     return supabaseResponse
 }
-
