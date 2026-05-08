@@ -1,3 +1,4 @@
+import { type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
 // Polyfill __dirname for Edge Runtime compatibility

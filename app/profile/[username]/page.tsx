@@ -10,8 +10,8 @@ import ProfileDock from '@/components/profile/ProfileDock'
 import { getUserDataForQuickSave } from '@/app/actions/collections'
 
 interface ProfilePageProps {
-    params: { username: string }
-    searchParams: { tab?: string }
+    params: Promise<{ username: string }>
+    searchParams: Promise<{ tab?: string }>
 }
 
 export default async function ProfilePage({ params, searchParams }: ProfilePageProps) {
