@@ -2,8 +2,8 @@ const CACHE_NAME = 'gitadda-v1'
 const STATIC_ASSETS = [
     '/',
     '/manifest.json',
-    '/icons/icon-192.png',
-    '/icons/icon-512.png',
+    '/icons/icon-192.svg',
+    '/icons/icon-512.svg',
 ]
 
 // Install — pre-cache critical assets
