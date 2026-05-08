@@ -9,7 +9,7 @@ export async function updateSession(request: NextRequest) {
     })
 
     try {
-        const { supabaseUrl, supabaseAnonKey } = getSupabaseEnv()
+        const { supabaseUrl, supabaseAnonKey } = getSupabaseEnv('middleware')
 
         const supabase = createServerClient(
             supabaseUrl,

@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Preconnect to external domains for faster resource loading */}
+        {/* Preconnect to GitHub and prefetch DNS for external domains */}
         <link rel="preconnect" href="https://github.com" />
         <link rel="preconnect" href="https://avatars.githubusercontent.com" />
         <link rel="preconnect" href="https://opengraph.githubassets.com" />
