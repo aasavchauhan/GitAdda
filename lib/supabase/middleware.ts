@@ -11,7 +11,11 @@ export async function updateSession(request: NextRequest) {
         const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
         if (!supabaseUrl || !supabaseAnonKey) {
-            console.error('Missing Supabase env vars:', { supabaseUrl: !!supabaseUrl, supabaseAnonKey: !!supabaseAnonKey })
+            const missingVars = [
+                !supabaseUrl ? 'NEXT_PUBLIC_SUPABASE_URL' : null,
+                !supabaseAnonKey ? 'NEXT_PUBLIC_SUPABASE_ANON_KEY' : null,
+            ].filter(Boolean)
+            console.error('Missing Supabase env vars:', missingVars)
             return supabaseResponse
         }
 
@@ -41,7 +45,7 @@ export async function updateSession(request: NextRequest) {
         // Refresh session if expired
         await supabase.auth.getUser()
     } catch (e) {
-        console.error('Middleware error:', e)
+        console.error('Middleware error:', e instanceof Error ? e.message : String(e))
     }
 
     return supabaseResponse
