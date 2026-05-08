@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import MobileNav from "@/components/layout/MobileNav";
@@ -9,12 +8,6 @@ import NavbarSkeleton from "@/components/layout/NavbarSkeleton";
 import { Toaster } from "sonner";
 import InstallPrompt from "@/components/pwa/InstallPrompt";
 import ServiceWorkerRegistration from "@/components/pwa/ServiceWorkerRegistration";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap", // Prevent FOIT (Flash of Invisible Text)
-});
 
 export const metadata: Metadata = {
   title: "GitAdda - Discover Repositories That Matter",
@@ -41,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
+    <html lang="en">
       <head>
         {/* Preconnect to external domains for faster resource loading */}
         <link rel="preconnect" href="https://github.com" />
@@ -80,4 +73,3 @@ export default function RootLayout({
     </html>
   );
 }
-
