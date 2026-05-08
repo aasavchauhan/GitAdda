@@ -1,13 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-
-// Polyfill __dirname for Edge Runtime compatibility
-if (typeof __dirname === 'undefined') {
-    (globalThis as any).__dirname = '/'
-}
-if (typeof __filename === 'undefined') {
-    (globalThis as any).__filename = '/'
-}
+import { getSupabaseEnv } from './env'
 
 
 export async function updateSession(request: NextRequest) {
@@ -16,13 +9,7 @@ export async function updateSession(request: NextRequest) {
     })
 
     try {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-        if (!supabaseUrl || !supabaseAnonKey) {
-            console.error('Missing Supabase env vars:', { supabaseUrl: !!supabaseUrl, supabaseAnonKey: !!supabaseAnonKey })
-            return supabaseResponse
-        }
+        const { supabaseUrl, supabaseAnonKey } = getSupabaseEnv('middleware')
 
         const supabase = createServerClient(
             supabaseUrl,
@@ -58,9 +45,8 @@ export async function updateSession(request: NextRequest) {
         // Refresh session if expired
         await supabase.auth.getUser()
     } catch (e) {
-        console.error('Middleware error:', e)
+        console.error('Middleware error:', e instanceof Error ? e.message : e)
     }
 
     return supabaseResponse
 }
-
